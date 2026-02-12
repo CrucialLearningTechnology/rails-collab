@@ -2,8 +2,8 @@
 
 require 'active_support/configurable'
 require 'faraday'
-require 'faraday_middleware'
-require 'faraday/encoding'
+require 'faraday/retry'
+require 'set'
 
 # ORM-ish for data-transfer between services
 module ApiClient
@@ -68,14 +68,7 @@ module ApiClient
     config.default_middlewares = Set.new(
       %i[
         instrumentation
-      ].concat(
-        [
-          # FaradayMiddleware::Gzip,
-          # FaradayMiddleware::ParseJson,
-          FaradayMiddleware::Chunked,
-          FaradayMiddleware::ParseDates
-        ]
-      )
+      ]
     )
 
     # request specific attributes
@@ -122,9 +115,9 @@ module ApiClient
         faraday.request :url_encoded
         # faraday.request :multipart
         faraday.request :json
-        faraday.request :retry, config.retry_coptions
+        faraday.request :retry, config.retry_options
 
-        faraday.options[:timeout] = config.timeout
+        faraday.options.timeout = config.timeout_in_seconds
 
         faraday.headers.merge!(http_headers)
 
@@ -135,8 +128,6 @@ module ApiClient
         # good if every response from this connection is JSON,
         # else it throws errors
         # faraday.response :json if expected_response_type == :json
-
-        faraday.response :encoding
 
         # NOTE: do not augment from to end of block. There be dragons
         log_response(faraday: faraday)
