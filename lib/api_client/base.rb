@@ -3,6 +3,7 @@
 require 'active_support/configurable'
 require 'faraday'
 require 'faraday/retry'
+require 'faraday/request/instrumentation'
 require 'set'
 
 # ORM-ish for data-transfer between services
@@ -66,8 +67,8 @@ module ApiClient
     # https://github.com/lostisland/awesome-faraday/#middleware
     # https://lostisland.github.io/faraday/middleware/instrumentation
     config.default_middlewares = Set.new(
-      %i[
-        instrumentation
+      [
+        Faraday::Request::Instrumentation
       ]
     )
 
