@@ -16,7 +16,7 @@ Gem::Specification.new do |spec|
   # spec.description   = %q{TODO: Write a longer description or delete this line.}
   spec.homepage      = 'https://github.com/benaubin/rails-collab'
   spec.license       = 'MIT'
-  spec.required_ruby_version = Gem::Requirement.new('>= 3.0.6')
+  spec.required_ruby_version = Gem::Requirement.new('>= 3.2.0')
 
   spec.metadata['homepage_uri'] = spec.homepage
   spec.metadata['source_code_uri'] = 'https://github.com/benaubin/rails-collab'
@@ -24,7 +24,7 @@ Gem::Specification.new do |spec|
 
   spec.files = Dir['{app,config,db,lib}/**/*', 'Rakefile']
 
-  spec.add_dependency 'rails', '>= 7.1.0', '< 8.0'
+  spec.add_dependency 'rails', '>= 7.1.0', '< 8.1'
   spec.add_dependency 'faraday', '~> 2.14.1'
   spec.add_dependency 'faraday-retry', '~> 2.2'
   # Note: Faraday 2 no longer uses `faraday_middleware` (which is Faraday 1.x only).
